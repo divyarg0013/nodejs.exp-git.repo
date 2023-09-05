@@ -1,38 +1,41 @@
-pipeline {
+pipeline{
 
-  environment {
-    #  Dockerhub login/dockerhubrepo
-    dockerimagename = "thetips4you/nodeapp"
-    dockerImage = ""
-  }
- #not Specifing any slave particularly
-  agent any
+	agent { label 'linux' }
+        options{
+          buildDiscarder(logRotator(numTokeepStr: '5'))
+}
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
+	}
 
-  stages {
+	stages {
+	   
+		stage('Build') {
 
-    stage('Checkout Source') {
-      steps {
-        git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
-      }
-    }
+			steps {
+				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+			}
+		}
 
-    stage('Build image') {
-      steps{
-        script {
-          dockerImage = docker.build dockerimagename
-        }
-      }
-    }
+		stage('Login') {
 
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhublogin'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
-        }
-      }
-    }
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+
+		stage('Push') {
+
+			steps {
+				sh 'docker push divyarg0013'
+			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+
+}
