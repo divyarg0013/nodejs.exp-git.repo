@@ -12,6 +12,7 @@ pipeline{
 
 			steps {
 				sh 'npm install'
+
 			}
 		}
 
@@ -32,5 +33,4 @@ pipeline{
 			sh 'docker logout'
 		}
 	}
-
 }
