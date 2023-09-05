@@ -1,37 +1,33 @@
-pipeline{
+pipeline {
+    agent any
 
-	agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-	}
+    stages {
+        stage('Package Installation') {
+            steps {
+                sh 'npm install'
+            }
+        }
 
-	stages {
-	    
-		stage('Package Installation') {
+        stage('Project Build') {
+            steps {
+                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+            }
+        }
 
-			steps {
-				sh 'npm install'
+        stage('Docker Login') {
+            steps {
+                sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
+            }
+        }
+    }
 
-			}
-		}
-
-		stage('Project Build') {
-			steps {
-				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-			}
-		}
-
-		stage('Docker Login') {
-
-			steps {
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
-		}
-post{
-		always {
-			sh 'docker logout'
-		}
-  	    }
+    post {
+        always {
+            sh 'docker logout'
+        }
     }
 }
