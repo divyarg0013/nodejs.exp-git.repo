@@ -8,13 +8,6 @@ pipeline{
 
 	stages {
 	    
-	    stage('GIT Clone') {
-
-			steps {
-				sh 'git clone https://github.com/divyarg0013/nodejs.exp-git.repo.git'
-			}
-		}
-
 		stage('Package Installation') {
 
 			steps {
@@ -43,20 +36,7 @@ pipeline{
 				sh 'docker push https://hub.docker.com/u/divyarg0013'
 			}
 		}
-		stage('Docker Start Container') {
-
-			steps {
-				sh 'docker push https://hub.docker.com/u/divyarg0013'
-			}
-		}
-	}
-                stage('Deploy Docker Container') {
-                        steps {
-                                sh ' docker run -d --name nice_kowalevski -p 3001:4000 divyarg0013/heyy-nodejsexp:0.0.1.RELEASE' 
-                        }
-                }
-        }
-
+		
 	post {
 		always {
 			sh 'docker logout'
