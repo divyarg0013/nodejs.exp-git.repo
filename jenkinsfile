@@ -8,14 +8,14 @@ pipeline{
 
 	stages {
 	    
-	    stage('gitclone') {
+	    stage('GIT Clone') {
 
 			steps {
 				git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
 			}
 		}
 
-		stage('Build') {
+		stage('Package Installation') {
 
 			steps {
 				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
@@ -23,14 +23,27 @@ pipeline{
 			}
 		}
 
-		stage('Login') {
+		stage('Project Build') {
+			steps {
+				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+'
+			}
+		}
+
+		stage('Docker Login') {
 
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 		}
 
-		stage('Push') {
+		stage('Docker Image Push') {
+
+			steps {
+				sh 'docker push https://hub.docker.com/u/divyarg0013'
+			}
+		}
+		stage('Docker Start Container') {
 
 			steps {
 				sh 'docker push https://hub.docker.com/u/divyarg0013'
