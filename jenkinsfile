@@ -50,6 +50,12 @@ pipeline{
 			}
 		}
 	}
+                stage('Deploy Docker Container') {
+                        steps {
+                                sh ' docker run -d --name nice_kowalevski -p 3001:4000 divyarg0013/heyy-nodejsexp:0.0.1.RELEASE' 
+                        }
+                }
+        }
 
 	post {
 		always {
