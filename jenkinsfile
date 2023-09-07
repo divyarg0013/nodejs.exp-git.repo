@@ -1,33 +1,52 @@
-pipeline {
-    agent any
+pipeline{
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('divyarg0013-dockerhub')
-    }
+	agent any
 
-    stages {
-        stage('Package Installation') {
-            steps {
-                sh 'npm install'
-            }
-        }
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+	}
 
-        stage('Project Build') {
-            steps {
-                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-            }
-        }
+	stages {
+	    
+		 stage('gitclone') {
 
-        stage('Docker Login') {
-            steps {
-                sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
-            }
-        }
-    }
+			steps {
+				git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
+			}
+		}
+		
+		stage('Package Installation') {
 
-    post {
-        always {
-            sh 'docker logout'
-        }
-    }
+			steps {
+				sh 'npm install'
+			}
+		}
+
+		stage('Project Build') {
+			steps {
+				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+
+			}
+		}
+
+		stage('Docker Login') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+
+		stage('Docker Image Push') {
+
+			steps {
+				sh 'docker push https://hub.docker.com/u/divyarg0013'
+			}
+		}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+	}
 }
