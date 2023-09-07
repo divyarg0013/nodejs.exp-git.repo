@@ -1,91 +1,18 @@
 pipeline {
-
     agent any
 
     environment {
-<<<<<<< HEAD
-        <<<<<<< HEAD
-        DOCKERHUB_CREDENTIALS=credentials('ddockerhub')
-=======
-        DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
->>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
+        DOCKERHUB_CREDENTIALS = credentials('divyarg0013-dockerhub')
     }
 
     stages {
-
-<<<<<<< HEAD
-        stage('Package Installation') {
-=======
         stage('gitclone') {
->>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
-
-            steps {
-                sh 'npm install'
-            }
-        }
-
-<<<<<<< HEAD
-        stage('Project Build') {
-            steps {
-                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-
-            }
-        }
-
-=======
-        stage('Package Installation') {
-
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Project Build') {
-            steps {
-                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-
-            }
-        }
-
->>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
-        stage('Docker Login') {
-
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-
-        stage('Docker Image Push') {
-<<<<<<< HEAD
-
-            steps {
-                sh 'docker push https://hub.docker.com/u/divyarg0013'
-            }
-        }
-        stage('Docker Start Container') {
-=======
->>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
-
-            steps {
-                sh 'docker push https://hub.docker.com/u/divyarg0013'
-            }
-        }
-
-=======
-        DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
-    }
-
-    stages {
-        
-         stage('gitclone') {
-
             steps {
                 git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
             }
         }
 
         stage('Package Installation') {
-
             steps {
                 sh 'npm install'
             }
@@ -94,25 +21,21 @@ pipeline {
         stage('Project Build') {
             steps {
                 sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-
             }
         }
 
         stage('Docker Login') {
-
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
         stage('Docker Image Push') {
-
             steps {
                 sh 'docker push https://hub.docker.com/u/divyarg0013'
             }
         }
 
->>>>>>> origin/main
         post  {
             always {
                 sh 'docker logout'
