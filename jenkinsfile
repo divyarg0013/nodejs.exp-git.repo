@@ -1,17 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    }
-
     stages {
-        stage('gitclone') {
-            steps {
-                git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
-            }
-        }
-
         stage('Package Installation') {
             steps {
                 sh 'npm install'
@@ -23,16 +13,9 @@ pipeline {
                 sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
             }
         }
-
-        stage('Docker Login') {
+        stage('Run Container') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-
-        stage('Docker Image Push') {
-            steps {
-                sh 'docker push https://hub.docker.com/u/divyarg0013'
+                sh 'docker run -d  divyarg0013/heyy-nodejsexp:0.0.1.RELEASE'
             }
         }
     }
