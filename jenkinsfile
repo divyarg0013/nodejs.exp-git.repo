@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Package Installation') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
         stage('Project Build') {
             steps {
                 sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
