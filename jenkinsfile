@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('divyarg0013-dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
     stages {
@@ -33,6 +33,12 @@ pipeline {
         stage('Docker Image Push') {
             steps {
                 sh 'docker push https://hub.docker.com/u/divyarg0013'
+            }
+        }
+
+        post {
+            always {
+                sh 'docker logout'
             }
         }
     }
