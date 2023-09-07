@@ -3,11 +3,18 @@ pipeline{
 	agent any
 
 	environment {
-		DOCKERHUB_CREDENTIALS=credentials('ddockerhub')
+		DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
 	}
 
 	stages {
 	    
+		 stage('gitclone') {
+
+			steps {
+				git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
+			}
+		}
+
 		stage('Package Installation') {
 
 			steps {
@@ -35,18 +42,11 @@ pipeline{
 				sh 'docker push https://hub.docker.com/u/divyarg0013'
 			}
 		}
-		stage('Docker Start Container') {
 
-			steps {
-				sh 'docker push https://hub.docker.com/u/divyarg0013'
-			}
-		}
-	}
-
-	post {
+	post  {
 		always {
 			sh 'docker logout'
 		}
 	}
-
+	}
 }
