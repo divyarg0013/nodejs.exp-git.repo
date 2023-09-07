@@ -1,52 +1,79 @@
 pipeline{
 
-	agent any
+    agent any
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('ddockerhub')
-	}
+    environment {
+        <<<<<<< HEAD
+        DOCKERHUB_CREDENTIALS=credentials('ddockerhub')
+=======
+        DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
+>>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
+    }
 
-	stages {
-	    
-		stage('Package Installation') {
+    stages {
 
-			steps {
-				sh 'npm install'
-			}
-		}
+<<<<<<< HEAD
+        stage('Package Installation') {
+=======
+        stage('gitclone') {
+>>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
 
-		stage('Project Build') {
-			steps {
-				sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+            steps {
+                sh 'npm install'
+            }
+        }
 
-			}
-		}
+<<<<<<< HEAD
+        stage('Project Build') {
+            steps {
+                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
 
-		stage('Docker Login') {
+            }
+        }
 
-			steps {
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
-		}
+=======
+        stage('Package Installation') {
 
-		stage('Docker Image Push') {
+            steps {
+                sh 'npm install'
+            }
+        }
 
-			steps {
-				sh 'docker push https://hub.docker.com/u/divyarg0013'
-			}
-		}
-		stage('Docker Start Container') {
+        stage('Project Build') {
+            steps {
+                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
 
-			steps {
-				sh 'docker push https://hub.docker.com/u/divyarg0013'
-			}
-		}
-	}
+            }
+        }
 
-	post {
-		always {
-			sh 'docker logout'
-		}
-	}
+>>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
+        stage('Docker Login') {
 
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('Docker Image Push') {
+<<<<<<< HEAD
+
+            steps {
+                sh 'docker push https://hub.docker.com/u/divyarg0013'
+            }
+        }
+        stage('Docker Start Container') {
+=======
+>>>>>>> 2f41d56c9801296ca7ad4378ef7c2152a508fa48
+
+            steps {
+                sh 'docker push https://hub.docker.com/u/divyarg0013'
+            }
+        }
+
+        post  {
+            always {
+                sh 'docker logout'
+            }
+        }
+    }
 }

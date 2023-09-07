@@ -1,0 +1,54 @@
+import jenkins.model.*
+import hudson.tasks.Builder
+import hudson.plugins.git.GitSCM
+import hudson.plugins.git.GitRepositoryBrowser
+import hudson.plugins.git.GitTool
+import hudson.plugins.git.BranchSpec
+import hudson.plugins.git.extensions.impl.RelativeTargetDirectory
+import hudson.plugins.git.extensions.impl.CleanCheckout
+import hudson.plugins.git.extensions.impl.BuildChooserSetting
+import hudson.plugins.git.extensions.impl.UserExclusion
+
+def jobName = 'doc-1' // Replace with your Jenkins Pipeline job name
+def buildNumber = 'Build #1 (6 Sep 2023, 10:16:13)'
+//Use'lastStableBuild','lastSuccessfulBuild',or specify a build number
+//* def pipelineParameters = [
+   // [name: 'PARAMETER_NAME_1', value: 'PARAMETER_VALUE_1'],
+   // [name: 'PARAMETER_NAME_2', value: 'PARAMETER_VALUE_2']
+//]
+
+def jenkins = Jenkins.instance
+def job = jenkins.getItemByFullName(jobName)
+def build = job.getBuild(buildNumber)
+
+def pipelineStep = new Builder() {
+    @Override
+        //  boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {
+        // def parameters = build.buildVariableResolver.resolveAll(pipelineParameters).collect { it.value }
+        def cmd = """
+        echo "Running Jenkins Pipeline as a build step..."
+        // echo "Parameters: ${parameters.join(', ')}"
+        # Run your Jenkins Pipeline script here or call a specific job
+        """
+        build.workspace.act(new FileCallable<Void>() {
+            @Override
+            void invoke(File workspace, VirtualChannel channel) {
+                def bat = new FilePath(workspace).child('run_pipeline.sh')
+                bat.write(cmd, 'UTF-8')
+                bat.chmod(0755)
+                int exitCode = bat.execute()
+                if (exitCode != 0) {
+                    listener.error("Error running Jenkins Pipeline: Exit code $exitCode")
+                    build.setResult(Result.FAILURE)
+                }
+            }
+            @Override
+            void checkRoles(RoleChecker checker) throws SecurityException { }
+        })
+        return true
+        }
+/* groovylint-disable-next-line NglParseError */
+}
+
+build.getProject().getBuildersList().add(pipelineStep)
+build.save()
