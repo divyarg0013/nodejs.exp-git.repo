@@ -35,11 +35,5 @@ pipeline {
                 sh 'docker push https://hub.docker.com/u/divyarg0013'
             }
         }
-
-        post  {
-            always {
-                sh 'docker logout'
-            }
-        }
     }
 }
