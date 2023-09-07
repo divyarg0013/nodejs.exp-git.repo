@@ -3,7 +3,7 @@ pipeline{
 	agent any
 
 	environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+		DOCKERHUB_CREDENTIALS=credentials('divyarg0013-dockerhub')
 	}
 
 	stages {
@@ -14,7 +14,7 @@ pipeline{
 				git 'https://github.com/divyarg0013/nodejs.exp-git.repo.git'
 			}
 		}
-		
+
 		stage('Package Installation') {
 
 			steps {
@@ -43,7 +43,7 @@ pipeline{
 			}
 		}
 
-	post {
+	post  {
 		always {
 			sh 'docker logout'
 		}
