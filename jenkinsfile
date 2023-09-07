@@ -3,19 +3,18 @@ pipeline {
 
     stages {
         stage('Package Installation') {
-
-			steps {
-				sh 'npm install'
-			}
-		}
+            steps {
+                sh 'npm install'
+            }
+        }
         stage('Project Build') {
             steps {
-                sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
+                sh 'docker build -t local-jenkins:latest .'
             }
         }
         stage('Run Container') {
             steps {
-                sh 'docker run -d  divyarg0013/heyy-nodejsexp:0.0.1.RELEASE '
+                sh 'docker run -d --name local-jenkins-container local-jenkins:latest'
             }
         }
     }
