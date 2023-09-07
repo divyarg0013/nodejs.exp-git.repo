@@ -1,0 +1,29 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    ports:
+      - "8080:8080"
+    volumes:
+      -C:\Users\91890\Desktop\DevOps-test\jenkinsfile
+      environment:
+      - JAVA_OPTS="--prefix=/jenkins"
+
+  git:
+    image: git/github
+    ports:
+      - "80:80"
+    volumes:
+      - https://github.com/divyarg0013/nodejs.exp-git.repo
+
+  nodejs-app:
+    image: node:slim
+    ports:
+      - "3000:3000"
+    volumes:
+      - C:\Users\91890\Desktop\DevOps-test\express\app.js
+    working_dir: /app
+    command: npm start
+
+volumes:
+  jenkins_home:
