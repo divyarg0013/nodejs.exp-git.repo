@@ -13,7 +13,8 @@ pipeline {
             steps {
                 dir('Dockerfile') {
                 sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
-            }
+                }
+            }  
         }
         stage('Run Container') {
             steps {
