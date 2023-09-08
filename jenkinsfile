@@ -11,6 +11,7 @@ pipeline {
         }
         stage('Project Build') {
             steps {
+                dir('Dockerfile') {
                 sh 'docker build -t divyarg0013/heyy-nodejsexp:0.0.1.RELEASE .'
             }
         }
