@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Package Installation') {
             steps {
-                sh 'npm install'
+                dir('express') {
+                    sh 'npm install'
+                }
             }
         }
         stage('Project Build') {
