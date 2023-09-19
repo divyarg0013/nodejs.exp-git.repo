@@ -1,0 +1,15 @@
+{
+  "name": "devops-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deletings3Object.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "divya.ravindra@smartfoodsafe.com",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1458.0",
+    "moment": "^2.29.4"
+  }
+}

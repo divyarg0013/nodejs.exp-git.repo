@@ -1,0 +1,23 @@
+const express = require('express');
+const app = express();
+
+// Define a list of trusted IP addresses
+const trustedIPs = ['192.168.1.1', '10.0.0.1'];
+
+// Middleware function to check IP whitelist
+const checkIPWhitelist = (req, res, next) => {
+  const clientIP = req.ip; // Get the client's IP address from the request
+  if (trustedIPs.includes(clientIP)) {
+    // If the client IP is in the whitelist, allow access
+    next();
+  } else {
+    // If the client IP is not in the whitelist, deny access
+    res.status(403).send('Access denied');
+  }
+};
+
+// Apply the IP whitelist check to specific routes or all routes
+// For example, applying it to a single route:
+app.get('/restricted-page', checkIPWhitelist, (req, res) => {
+  res.send('This is a restricted page accessible only to whitelisted IPs.');
+});
